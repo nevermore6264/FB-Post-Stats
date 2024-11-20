@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "FB Post Stats",
+  "version": "1.0",
+  "description": "Thống kê bài viết trên Facebook.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://*.facebook.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["libs/xlsx.full.min.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

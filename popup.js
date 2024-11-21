@@ -1,6 +1,7 @@
 let extractedData = [];
 
 document.getElementById("startButton").addEventListener("click", () => {
+  console.log("Bắt đầu crawl data");
   const urls = document
     .getElementById("urls")
     .value.split(",")

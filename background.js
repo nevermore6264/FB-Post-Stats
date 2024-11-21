@@ -18,7 +18,9 @@ async function extractDataFromPage(urls) {
   let data = [];
   for (const url of urls) {
     await fetch(url) // Fetch data from the Facebook page URL
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+      })
       .then((postData) => {
         data.push({
           pageName: postData.pageName,

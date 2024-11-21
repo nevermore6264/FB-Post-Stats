@@ -1,23 +1,15 @@
 document.getElementById("startButton").addEventListener("click", () => {
   console.log("Bắt đầu crawl data");
-  const url = document.getElementById("urls").value.trim(); // Lấy 1 URL duy nhất
-
-  if (!url) {
-    alert("Please enter a valid URL!");
-    return;
-  }
-
-  // Gửi tin nhắn đến content.js
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs.length > 0) {
       chrome.tabs.sendMessage(
         tabs[0].id,
-        { action: "extractData", url: url }, // Chỉ gửi 1 URL
+        { action: "extractData" },
         (response) => {
           if (chrome.runtime.lastError) {
             console.error("Error:", chrome.runtime.lastError.message);
           } else if (response?.status === "success") {
-            extractedData = [response.data]; // Lưu kết quả vào biến toàn cục
+            const extractedData = response.data; // Lưu dữ liệu bài post
             renderTable(extractedData); // Hiển thị dữ liệu lên bảng
           } else {
             alert(
@@ -32,6 +24,7 @@ document.getElementById("startButton").addEventListener("click", () => {
   });
 });
 
+// Hàm hiển thị dữ liệu lên bảng
 function renderTable(data) {
   const tableBody = document.querySelector("#resultsTable tbody");
   tableBody.innerHTML = ""; // Xóa nội dung cũ
@@ -46,7 +39,7 @@ function renderTable(data) {
         <td>${item.shares}</td>
         <td>${item.dateTime}</td>
         <td>${item.comments}</td>
-        <td>${item.postURL}</td>
+        <td><a href="${item.postURL}" target="_blank">Link</a></td>
       `;
     tableBody.appendChild(row);
   });

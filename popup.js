@@ -1,24 +1,56 @@
-let extractedData = [];
-
 document.getElementById("startButton").addEventListener("click", () => {
   console.log("Bắt đầu crawl data");
-  const urls = document
-    .getElementById("urls")
-    .value.split(",")
-    .map((url) => url.trim());
+  const url = document.getElementById("urls").value.trim(); // Lấy 1 URL duy nhất
 
-  chrome.runtime.sendMessage(
-    { action: "extractData", urls: urls },
-    (response) => {
-      if (response.status === "success") {
-        extractedData = response.data; // Lưu dữ liệu vào biến toàn cục
-        renderTable(extractedData); // Hiển thị dữ liệu lên bảng
-      } else {
-        alert("Error: " + response.error);
-      }
+  if (!url) {
+    alert("Please enter a valid URL!");
+    return;
+  }
+
+  // Gửi tin nhắn đến content.js
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs.length > 0) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: "extractData", url: url }, // Chỉ gửi 1 URL
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error("Error:", chrome.runtime.lastError.message);
+          } else if (response?.status === "success") {
+            extractedData = [response.data]; // Lưu kết quả vào biến toàn cục
+            renderTable(extractedData); // Hiển thị dữ liệu lên bảng
+          } else {
+            alert(
+              "Error extracting data: " + (response?.error || "Unknown error")
+            );
+          }
+        }
+      );
+    } else {
+      console.error("No active tab found.");
     }
-  );
+  });
 });
+
+function renderTable(data) {
+  const tableBody = document.querySelector("#resultsTable tbody");
+  tableBody.innerHTML = ""; // Xóa nội dung cũ
+
+  data.forEach((item) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${item.pageName}</td>
+        <td>${item.postID}</td>
+        <td>${item.caption}</td>
+        <td>${item.likes}</td>
+        <td>${item.shares}</td>
+        <td>${item.dateTime}</td>
+        <td>${item.comments}</td>
+        <td>${item.postURL}</td>
+      `;
+    tableBody.appendChild(row);
+  });
+}
 
 document.getElementById("exportButton").addEventListener("click", () => {
   if (extractedData.length === 0) {
@@ -28,28 +60,6 @@ document.getElementById("exportButton").addEventListener("click", () => {
   downloadData(extractedData);
 });
 
-// Hiển thị dữ liệu lên bảng
-function renderTable(data) {
-  const tableBody = document.querySelector("#resultsTable tbody");
-  tableBody.innerHTML = ""; // Xóa nội dung cũ
-
-  data.forEach((item) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${item.pageName}</td>
-      <td>${item.postID}</td>
-      <td>${item.caption}</td>
-      <td>${item.likes}</td>
-      <td>${item.shares}</td>
-      <td>${item.dateTime}</td>
-      <td>${item.comments}</td>
-      <td>${item.postURL}</td>
-    `;
-    tableBody.appendChild(row);
-  });
-}
-
-// Tải xuống dữ liệu dưới dạng CSV
 function downloadData(data) {
   let csvContent =
     "Page Name,Post ID,Caption,Likes,Shares,Date/Time,Comments,Post URL\n";

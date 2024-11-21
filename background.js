@@ -4,6 +4,8 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action == "extractData") {
+    console.log("Raw response:", response);
+
     // Start scraping logic here
     extractDataFromPage(request.urls)
       .then((data) => sendResponse({ status: "success", data }))

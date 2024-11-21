@@ -1,44 +1,23 @@
-// Function to scrape data from the current Facebook page
-function scrapePageData() {
-  try {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "extractData") {
+    console.log("Received request to extract data for URL:", request.url);
+
+    // Logic lấy dữ liệu từ trang
     const pageData = {
-      pageName: document.querySelector("h1")?.innerText || "Unknown Page",
-      postID: window.location.href.split("/").pop() || "Unknown Post ID",
-      caption:
-        document.querySelector('div[data-ft="{}"]')?.innerText || "No Caption",
-      likes:
-        document.querySelector('[aria-label*="likes"]')?.innerText || "0 Likes",
-      shares:
-        document.querySelector('[aria-label*="shares"]')?.innerText ||
-        "0 Shares",
-      dateTime:
-        document.querySelector("abbr")?.getAttribute("title") || "No Date/Time",
+      pageName: document.querySelector("h1")?.innerText,
+      postID: window.location.href.split("/").pop(),
+      caption: document.querySelector('div[data-ft="{}"]')?.innerText,
+      likes: document.querySelector('[aria-label*="likes"]')?.innerText,
+      shares: document.querySelector('[aria-label*="shares"]')?.innerText,
+      dateTime: document.querySelector("abbr")?.getAttribute("title"),
       comments:
         document.querySelectorAll(
           'div[data-testid="UFI2CommentsList/root_depth_0"]'
         )?.length || 0,
-      postURL: window.location.href,
+      postURL: request.url,
     };
-    return pageData;
-  } catch (error) {
-    console.error("Error scraping page data:", error);
-    return {
-      pageName: "Error",
-      postID: "Error",
-      caption: "Error",
-      likes: "Error",
-      shares: "Error",
-      dateTime: "Error",
-      comments: "Error",
-      postURL: "Error",
-    };
-  }
-}
 
-// Listen for messages from the extension
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "scrape") {
-    const data = scrapePageData();
-    sendResponse(data);
+    // Gửi kết quả về popup.js
+    sendResponse({ status: "success", data: pageData });
   }
 });

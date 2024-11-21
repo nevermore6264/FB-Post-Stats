@@ -57,17 +57,6 @@ button {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Restart Button */
-#restartButton {
-  background-color: #ff9800;
-  color: #fff;
-}
-
-#restartButton:hover {
-  background-color: #e68a00;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
 /* Status Section */
 #status {
   margin-top: 15px;

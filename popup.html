@@ -8,12 +8,12 @@
     <h3>Facebook Scraper</h3>
     <textarea
       id="urls"
-      rows="4"
-      placeholder="Enter a Facebook page URL"
+      rows="1"
+      placeholder="Enter a single Facebook Page URL"
     ></textarea>
     <button id="startButton">Start Extraction</button>
     <button id="exportButton">Export to CSV</button>
-    <table id="resultsTable" border="1">
+    <table id="resultsTable">
       <thead>
         <tr>
           <th>Page Name</th>
@@ -26,9 +26,7 @@
           <th>Post URL</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Dynamic rows will be appended here -->
-      </tbody>
+      <tbody></tbody>
     </table>
     <script src="popup.js"></script>
   </body>

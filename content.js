@@ -2,9 +2,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "extractData") {
     console.log("Received request to extract data for URL:", request.url);
 
-    // Lấy danh sách các bài viết
-    const posts = document.querySelectorAll("[role='article']"); // Tìm các bài post dựa trên role attribute
-    console.log(">>>>>>>>>>>>>>>>>>>", posts);
+    // Tìm tất cả bài viết trên trang
+    const posts = document.querySelectorAll('[role="article"]'); // Lấy các phần tử bài viết
+
     if (!posts || posts.length === 0) {
       sendResponse({ status: "error", error: "No posts found on the page." });
       return;
@@ -12,19 +12,54 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Duyệt qua từng bài post để thu thập thông tin
     const postData = Array.from(posts).map((post) => {
-      const postID = post.getAttribute("aria-posinset") || "No post ID";
+      const facebookUrl = request.url;
+      const pageName =
+        document.querySelector("h1")?.innerText || "Unknown Page";
+      const pageId =
+        document
+          .querySelector("[data-page-id]")
+          ?.getAttribute("data-page-id") || "Unknown Page ID";
+      const postId = post.getAttribute("aria-posinset") || "Unknown Post ID";
+      const text = post.querySelector("p")?.innerText || "No content";
+      const likes = parseInt(
+        post
+          .querySelector('[aria-label*="like"]')
+          ?.innerText.replace(/\D/g, "") || "0"
+      );
+      const comments = parseInt(
+        post
+          .querySelector('[aria-label*="comment"]')
+          ?.innerText.replace(/\D/g, "") || "0"
+      );
+      const shares = parseInt(
+        post
+          .querySelector('[aria-label*="share"]')
+          ?.innerText.replace(/\D/g, "") || "0"
+      );
+      const time =
+        post.querySelector("abbr")?.getAttribute("title") || "Unknown Time";
+      const timestamp = new Date(time).getTime();
+      const link = post.querySelector("a")?.href || facebookUrl;
+      const thumb = post.querySelector("img")?.src || null;
+      const topLevelUrl = `${facebookUrl}/posts/${postId}`;
+
       return {
-        pageName: document.querySelector("h1")?.innerText || "No page name", // Tên trang
-        postID: postID,
-        caption:
-          post.querySelector("[data-ad-preview]")?.innerText || "No caption", // Caption của bài viết
-        likes: post.querySelector('[aria-label*="like"]')?.innerText || "0", // Số lượt thích
-        shares: post.querySelector('[aria-label*="share"]')?.innerText || "0", // Số lượt chia sẻ
-        dateTime:
-          post.querySelector("abbr")?.getAttribute("title") || "Unknown", // Thời gian bài viết
-        comments:
-          post.querySelector('[aria-label*="comment"]')?.innerText || "0", // Số bình luận
-        postURL: post.querySelector("a")?.href || "No URL", // URL của bài viết
+        facebookUrl,
+        pageId,
+        postId,
+        pageName,
+        url: link,
+        time,
+        timestamp,
+        likes,
+        comments,
+        shares,
+        text,
+        link,
+        thumb,
+        topLevelUrl,
+        facebookId: pageId,
+        postFacebookId: postId,
       };
     });
 

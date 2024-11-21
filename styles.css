@@ -75,3 +75,22 @@ button {
   text-align: center;
   color: #555;
 }
+
+#resultsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#resultsTable th,
+#resultsTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#resultsTable th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+}

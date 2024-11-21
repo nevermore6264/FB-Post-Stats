@@ -9,12 +9,27 @@
     <textarea
       id="urls"
       rows="4"
-      placeholder="Enter post URLs, separated by commas"
+      placeholder="Enter a Facebook page URL"
     ></textarea>
     <button id="startButton">Start Extraction</button>
-    <button id="restartButton">Restart</button>
-    <div id="status"></div>
-
+    <button id="exportButton">Export to CSV</button>
+    <table id="resultsTable" border="1">
+      <thead>
+        <tr>
+          <th>Page Name</th>
+          <th>Post ID</th>
+          <th>Caption</th>
+          <th>Likes</th>
+          <th>Shares</th>
+          <th>Date/Time</th>
+          <th>Comments</th>
+          <th>Post URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will be appended here -->
+      </tbody>
+    </table>
     <script src="popup.js"></script>
   </body>
 </html>

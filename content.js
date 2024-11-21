@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Received request to extract data for URL:", request.url);
 
     // Lấy danh sách các bài viết
-    const posts = document.querySelectorAll("div[html-div]"); // Tìm các bài post dựa trên selector
+    const posts = document.querySelectorAll("[role='article']"); // Tìm các bài post dựa trên role attribute
     console.log(">>>>>>>>>>>>>>>>>>>", posts);
     if (!posts || posts.length === 0) {
       sendResponse({ status: "error", error: "No posts found on the page." });
@@ -12,10 +12,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Duyệt qua từng bài post để thu thập thông tin
     const postData = Array.from(posts).map((post) => {
+      const postID = post.getAttribute("aria-posinset") || "No post ID";
       return {
-        pageName: document.querySelector("h1")?.innerText, // Tên trang
-        postID: post.dataset.ft, // PostID từ `data-ft` attribute
-        caption: post.querySelector("p")?.innerText || "No caption", // Caption của bài viết
+        pageName: document.querySelector("h1")?.innerText || "No page name", // Tên trang
+        postID: postID,
+        caption:
+          post.querySelector("[data-ad-preview]")?.innerText || "No caption", // Caption của bài viết
         likes: post.querySelector('[aria-label*="like"]')?.innerText || "0", // Số lượt thích
         shares: post.querySelector('[aria-label*="share"]')?.innerText || "0", // Số lượt chia sẻ
         dateTime:

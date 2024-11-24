@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Facebook Scraper</title>
+    <title>Facebook Group Scraper</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h3>Facebook Scraper</h3>
-    <input
-      id="url"
+    <h3>Facebook Group Scraper</h3>
+    <textarea
+      id="urls"
       rows="1"
-      placeholder="Enter a single Facebook Page URL"
-    ></input>
+      placeholder="Enter Facebook group URL"
+    ></textarea>
     <button id="startButton">Start Extraction</button>
     <button id="exportButton">Export to CSV</button>
-    <table id="resultsTable" border="1">
+    <table id="resultsTable">
       <thead>
         <tr>
           <th>Page Name</th>
           <th>Post ID</th>
-          <th>Caption</th>
+          <th>Text</th>
           <th>Likes</th>
           <th>Shares</th>
           <th>Date/Time</th>

@@ -1,29 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "Facebook Post Scraper",
+  "name": "Facebook Group Scraper",
   "version": "1.0",
-  "permissions": ["activeTab", "storage", "downloads", "tabs", "scripting"],
-  "host_permissions": ["http://m.facebook.com/*", "https://m.facebook.com/*"],
+  "description": "Scrape Facebook group posts data and export to CSV",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://www.facebook.com/groups/*"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "icon.png",
-      "48": "icon.png",
-      "128": "icon.png"
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "content_scripts": [
     {
-      "matches": ["*://m.facebook.com/*", "*://www.facebook.com/*"],
+      "matches": ["https://www.facebook.com/groups/*"],
       "js": ["content.js"]
     }
   ],
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }

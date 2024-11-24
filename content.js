@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const postData = Array.from(posts).map((post, index) => {
       const facebookUrl = request.url;
       const pageName =
-        document.querySelector(".html-h2 span")?.innerText || "Unknown Page";
+        document.querySelector(".html-h1 span")?.innerText || "Unknown Page";
       const pageId =
         document
           .querySelector("[data-page-id]")
@@ -25,13 +25,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         post.querySelector('[data-ad-rendering-role="story_message"]')
           ?.innerText || "No content";
       const likesText =
-        post.querySelector('[aria-label*="like"]')?.innerText || "0";
+        post.querySelector('[aria-label*="thích"]')?.innerText || "0";
       const likes = parseInt(likesText.replace(/\D/g, "")) || 0;
       const commentsText =
-        post.querySelector('[aria-label*="comment"]')?.innerText || "0";
+        post.querySelector('[aria-label*="bình luận"]')?.innerText || "0";
       const comments = parseInt(commentsText.replace(/\D/g, "")) || 0;
       const sharesText =
-        post.querySelector('[aria-label*="share"]')?.innerText || "0";
+        post.querySelector('[aria-label*="chia sẻ"]')?.innerText || "0";
       const shares = parseInt(sharesText.replace(/\D/g, "")) || null;
       const time =
         post.querySelector("abbr")?.getAttribute("title") || "Unknown Time";

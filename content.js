@@ -12,24 +12,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const facebookUrl = request.url;
 
     // Duyệt qua từng bài post để thu thập thông tin
-    const postData = Array.from(posts).map((post, _) => {
+    const postData = Array.from(posts).map((post, index) => {
       const pageName =
         document.querySelector(".html-h1 span")?.innerText || "Unknown Page";
-      // Lấy tên và URL người đăng bài
+
       const posterElement = document.querySelector(
         '[data-ad-rendering-role="profile_name"]'
       );
+
+      // Lấy tên người đăng
       const posterName =
         posterElement?.querySelector("a")?.innerText || "Unknown Poster";
-      const posterUrl =
-        posterElement?.querySelector("a")?.getAttribute("href") ||
-        "Unknown URL";
+
+      // Lấy URL người đăng
+      let posterUrl = posterElement?.querySelector("a")?.getAttribute("href");
+      posterUrl =
+        "https://www.facebook.com" + posterUrl?.split("/?")[0] || "Unknown URL";
+
       const text =
         post.querySelector('[data-ad-rendering-role="story_message"]')
           ?.innerText || "No content";
+
+      // Số lượt thích
       const likesText =
-        post.querySelector('[aria-label*="thích"]')?.innerText || "0";
-      const likes = parseInt(likesText.replace(/\D/g, "")) || 0;
+        post
+          .querySelector('[aria-label^="Thích:"]')
+          ?.getAttribute("aria-label")
+          ?.match(/\d+/)[0] || "0";
+      const likes = parseInt(likesText) || 0;
       const commentsText =
         post.querySelector('[aria-label*="bình luận"]')?.innerText || "0";
       const comments = parseInt(commentsText.replace(/\D/g, "")) || 0;

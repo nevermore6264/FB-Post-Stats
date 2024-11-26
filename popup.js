@@ -46,7 +46,7 @@ function renderTable(data) {
     row.innerHTML = `
         <td>${item.pageName}</td>
         <td>${item.posterName}</td>
-        <td>${item.posterUrl}</td>
+        <td><a href="${item.posterUrl}">${item.posterUrl}</a></td>
         <td>${item.text}</td>
         <td>${item.likes}</td>
         <td>${item.shares}</td>

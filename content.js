@@ -16,17 +16,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const pageName =
         document.querySelector(".html-h1 span")?.innerText || "Unknown Page";
       // Lấy tên và URL người đăng bài
-      const posterElement = document.evaluate(
-        '//*[@id=":rfn:"]/span/span/a',
-        post,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      ).singleNodeValue;
+      const posterElement = document.querySelector(
+        '[data-ad-rendering-role="profile_name"]'
+      );
       const posterName =
-        posterElement?.querySelector("strong span")?.innerText ||
-        "Unknown Poster";
-      const posterUrl = posterElement?.getAttribute("href") || "Unknown URL";
+        posterElement?.querySelector("a")?.innerText || "Unknown Poster";
+      const posterUrl =
+        posterElement?.querySelector("a")?.getAttribute("href") ||
+        "Unknown URL";
       const text =
         post.querySelector('[data-ad-rendering-role="story_message"]')
           ?.innerText || "No content";

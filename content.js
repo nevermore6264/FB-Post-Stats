@@ -46,16 +46,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           ?.getAttribute("aria-label")
           ?.match(/\d+/)[0] || "0";
       const likes = parseInt(likesText) || 0;
+
       const commentsText =
         post.querySelector('[aria-label*="bình luận"]')?.innerText || "0";
       const comments = parseInt(commentsText.replace(/\D/g, "")) || 0;
       const sharesText =
-        post.querySelector('[aria-label*="chia sẻ"]')?.innerText || "0";
-      const shares = parseInt(sharesText.replace(/\D/g, "")) || null;
-      const time = document.getElementById(infor[0]).innerText || "-";
+        document.getElementById(infor[infor.length - 1])?.innerText || "-";
+      const shares = parseInt(sharesText) || 0;
+      const time = document.getElementById(infor[0])?.innerText || "-";
       const timestamp =
         time !== "Unknown Time" ? new Date(time).getTime() : null;
-
+      const postURL =
+        document
+          .getElementById(infor[0])
+          ?.querySelector("a")
+          ?.getAttribute("href") || "-";
       return {
         facebookUrl,
         posterName,
@@ -67,6 +72,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         likes,
         comments,
         shares,
+        postURL,
       };
     });
 

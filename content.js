@@ -9,10 +9,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: "error", error: "No posts found on the page." });
       return;
     }
+    const facebookUrl = request.url;
 
     // Duyệt qua từng bài post để thu thập thông tin
     const postData = Array.from(posts).map((post, _) => {
-      const facebookUrl = request.url;
       const pageName =
         document.querySelector(".html-h1 span")?.innerText || "Unknown Page";
       // Lấy tên và URL người đăng bài

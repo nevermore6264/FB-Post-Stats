@@ -9,14 +9,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ status: "error", error: "No posts found on the page." });
       return;
     }
+
+    // Lấy link group
     const facebookUrl = request.url;
 
     // Duyệt qua từng bài post để thu thập thông tin
     const postData = Array.from(posts).map((post, index) => {
-      const pageName =
-        document.querySelector(".html-h1 span")?.innerText || "Unknown Page";
+      const pageName = post.querySelector(".html-h1 span")?.innerText || "-";
 
-      const posterElement = document.querySelector(
+      const posterElement = post.querySelector(
         '[data-ad-rendering-role="profile_name"]'
       );
 

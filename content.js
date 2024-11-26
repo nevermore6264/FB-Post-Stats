@@ -19,6 +19,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Duyệt qua từng bài post để thu thập thông tin
     const postData = Array.from(posts).map((post, _) => {
+      // Lấy all tác vụ
+      const infor = post.getAttribute("aria-describedby").split(" ");
+
       const posterElement = post.querySelector(
         '[data-ad-rendering-role="profile_name"]'
       );
@@ -49,8 +52,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const sharesText =
         post.querySelector('[aria-label*="chia sẻ"]')?.innerText || "0";
       const shares = parseInt(sharesText.replace(/\D/g, "")) || null;
-      const time =
-        post.querySelector("abbr")?.getAttribute("title") || "Unknown Time";
+      const time = document.getElementById(infor[0]).innerText || "-";
       const timestamp =
         time !== "Unknown Time" ? new Date(time).getTime() : null;
 

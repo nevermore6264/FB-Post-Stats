@@ -45,7 +45,8 @@ function renderTable(data) {
     const row = document.createElement("tr");
     row.innerHTML = `
         <td>${item.pageName}</td>
-        <td>${item.postId}</td>
+        <td>${item.posterName}</td>
+        <td>${item.posterUrl}</td>
         <td>${item.text}</td>
         <td>${item.likes}</td>
         <td>${item.shares}</td>
@@ -67,17 +68,16 @@ document.getElementById("exportButton").addEventListener("click", () => {
 });
 
 function downloadData(data) {
-  let csvContent =
-    "facebookUrl,pageId,postId,pageName,url,time,timestamp,likes,comments,shares,text,link,thumb,topLevelUrl,facebookId,postFacebookId\n";
-  data.forEach((item) => {
-    csvContent += `"${item.facebookUrl}","${item.pageId}","${item.postId}","${item.pageName}","${item.url}","${item.time}",${item.timestamp},${item.likes},${item.comments},${item.shares},"${item.text}","${item.link}","${item.thumb}","${item.topLevelUrl}","${item.facebookId}","${item.postFacebookId}"\n`;
-  });
-
-  const blob = new Blob([csvContent], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "facebook_data.csv";
-  a.click();
-  URL.revokeObjectURL(url);
+  // let csvContent =
+  //   "facebookUrl,pageId,postId,pageName,url,time,timestamp,likes,comments,shares,text,link,thumb,topLevelUrl,facebookId,postFacebookId\n";
+  // data.forEach((item) => {
+  //   csvContent += `"${item.facebookUrl}","${item.pageId}","${item.postId}","${item.pageName}","${item.url}","${item.time}",${item.timestamp},${item.likes},${item.comments},${item.shares},"${item.text}","${item.link}","${item.thumb}","${item.topLevelUrl}","${item.facebookId}","${item.postFacebookId}"\n`;
+  // });
+  // const blob = new Blob([csvContent], { type: "text/csv" });
+  // const url = URL.createObjectURL(blob);
+  // const a = document.createElement("a");
+  // a.href = url;
+  // a.download = "facebook_data.csv";
+  // a.click();
+  // URL.revokeObjectURL(url);
 }

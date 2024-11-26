@@ -46,13 +46,13 @@ function renderTable(data) {
     row.innerHTML = `
         <td>${item.pageName}</td>
         <td>${item.posterName}</td>
-        <td><a href="${item.posterUrl}">${item.posterUrl}</a></td>
+        <td><a href="${item.posterUrl}" target="_blank">${item.posterUrl}</a></td>
         <td>${item.text}</td>
         <td>${item.likes}</td>
         <td>${item.shares}</td>
         <td>${item.time}</td>
         <td>${item.comments}</td>
-        <td><a href="${item.postURL}" target="_blank">Link</a></td>
+        <td><a href="${item.postURL}" target="_blank">${item.postURL}</a></td>
       `;
     tableBody.appendChild(row);
   });

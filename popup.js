@@ -68,16 +68,44 @@ document.getElementById("exportButton").addEventListener("click", () => {
 });
 
 function downloadData(data) {
-  // let csvContent =
-  //   "facebookUrl,pageId,postId,pageName,url,time,timestamp,likes,comments,shares,text,link,thumb,topLevelUrl,facebookId,postFacebookId\n";
-  // data.forEach((item) => {
-  //   csvContent += `"${item.facebookUrl}","${item.pageId}","${item.postId}","${item.pageName}","${item.url}","${item.time}",${item.timestamp},${item.likes},${item.comments},${item.shares},"${item.text}","${item.link}","${item.thumb}","${item.topLevelUrl}","${item.facebookId}","${item.postFacebookId}"\n`;
-  // });
-  // const blob = new Blob([csvContent], { type: "text/csv" });
-  // const url = URL.createObjectURL(blob);
-  // const a = document.createElement("a");
-  // a.href = url;
-  // a.download = "facebook_data.csv";
-  // a.click();
-  // URL.revokeObjectURL(url);
+  // Tạo tiêu đề cột theo yêu cầu
+  const headers = [
+    "Nhóm",
+    "Người đăng",
+    "URL FB",
+    "Nội dung đăng",
+    "Likes",
+    "Shares",
+    "Date/Time",
+    "Comments",
+    "Post URL",
+  ];
+
+  // Bắt đầu chuỗi CSV với tiêu đề
+  let csvContent = headers.join(",") + "\n";
+
+  // Duyệt qua dữ liệu để thêm từng dòng
+  data.forEach((item) => {
+    const row = [
+      item.pageName || "", // Nhóm
+      item.posterName || "", // Người đăng
+      item.posterUrl || "", // URL FB của người đăng
+      item.text || "", // Nội dung đăng
+      item.likes || 0, // Likes
+      item.shares || 0, // Shares
+      item.time || "", // Date/Time
+      item.comments || 0, // Comments
+      item.topLevelUrl || "", // Post URL
+    ];
+    csvContent += row.map((field) => `"${field}"`).join(",") + "\n";
+  });
+
+  // Tạo tệp CSV và kích hoạt tải về
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "facebook_group_posts.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }

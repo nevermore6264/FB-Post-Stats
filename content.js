@@ -27,17 +27,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       );
 
       // Lấy tên người đăng
-      const posterName =
-        posterElement?.querySelector("a")?.innerText || "Unknown Poster";
+      const posterName = posterElement?.querySelector("a")?.innerText || "-";
 
       // Lấy URL người đăng
       let posterUrl = posterElement?.querySelector("a")?.getAttribute("href");
       posterUrl =
-        "https://www.facebook.com" + posterUrl?.split("/?")[0] || "Unknown URL";
+        posterUrl != null
+          ? "https://www.facebook.com" + posterUrl?.split("/?")[0]
+          : "-";
 
       const text =
         post.querySelector('[data-ad-rendering-role="story_message"]')
-          ?.innerText || "No content";
+          ?.innerText || "-";
 
       // Số lượt thích
       const likesText =
@@ -51,9 +52,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         document.getElementById(infor[infor.length - 1])?.innerText || "-";
       const comments = parseInt(commentsText) || 0;
 
-      const shares = 0;
+      let shares = 0;
       // Tìm tất cả các thẻ có attribute data-visualcompletion="ignore-dynamic"
-      let elements = document.querySelectorAll(
+      let elements = post.querySelectorAll(
         '[data-visualcompletion="ignore-dynamic"]'
       );
 

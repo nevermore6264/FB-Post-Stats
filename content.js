@@ -48,11 +48,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const likes = parseInt(likesText) || 0;
 
       const commentsText =
-        post.querySelector('[aria-label*="bình luận"]')?.innerText || "0";
-      const comments = parseInt(commentsText.replace(/\D/g, "")) || 0;
-      const sharesText =
         document.getElementById(infor[infor.length - 1])?.innerText || "-";
-      const shares = parseInt(sharesText) || 0;
+      const comments = parseInt(commentsText) || 0;
+
+      const shares = 0;
+      // Tìm tất cả các thẻ có attribute data-visualcompletion="ignore-dynamic"
+      let elements = document.querySelectorAll(
+        '[data-visualcompletion="ignore-dynamic"]'
+      );
+
+      // Duyệt qua các phần tử tìm được
+      elements.forEach((element) => {
+        // Tìm tất cả các thẻ span bên trong phần tử hiện tại
+        let spans = element.querySelectorAll("span");
+
+        spans.forEach((span) => {
+          // Kiểm tra nếu span có class và chứa chữ "lượt chia sẻ"
+          if (
+            span.classList.length > 0 &&
+            span.textContent.includes("lượt chia sẻ")
+          ) {
+            const sharesText = span.textContent?.match(/\d+/)[0] || "0";
+            shares = parseInt(sharesText) || 0;
+          }
+        });
+      });
+
       const time = document.getElementById(infor[0])?.innerText || "-";
       const timestamp =
         time !== "Unknown Time" ? new Date(time).getTime() : null;

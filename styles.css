@@ -78,6 +78,7 @@ button {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  word-break: break-all;
 }
 
 #resultsTable th {

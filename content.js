@@ -75,9 +75,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       });
 
-      const time = document.getElementById(infor[0])?.innerText || "-";
-      const timestamp =
-        time !== "Unknown Time" ? new Date(time).getTime() : null;
+      const idOfTimeColumn =
+        document
+          ?.getElementById(infor[0])
+          ?.querySelector("[aria-labelledby]")
+          ?.getAttribute("aria-labelledby") || null;
+
+      const time =
+        idOfTimeColumn != null
+          ? document.getElementById(`${idOfTimeColumn}`)?.innerText
+          : "-";
+
       const postURL =
         document
           .getElementById(infor[0])
@@ -90,7 +98,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         pageName,
         text,
         time,
-        timestamp,
         likes,
         comments,
         shares,

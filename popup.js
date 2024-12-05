@@ -95,7 +95,7 @@ function downloadData(data) {
       item.shares || 0, // Shares
       item.time || "", // Date/Time
       item.comments || 0, // Comments
-      item.topLevelUrl || "", // Post URL
+      item.postURL || "", // Post URL
     ];
     csvContent += row.map((field) => `"${field}"`).join(",") + "\n";
   });
